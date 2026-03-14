@@ -6,12 +6,49 @@ A **full-stack School Management System** built with React, Node.js/Express, and
 
 ## 🚀 Quick Start
 
+### Clone the Repository
+
+```bash
+# Clone the project
+git clone https://github.com/rdx289/school-management.git
+
+# Navigate to project directory
+cd school-management
+```
+
+---
+
 ### Prerequisites
 - Node.js v18+
 - MySQL 8.0+
 - npm or yarn
 
 ---
+
+### Quick Run (All Steps)
+
+```bash
+# 1. Setup Database
+mysql -u root -p < backend/config/schema.sql
+
+# 2. Backend Setup & Run (in one terminal)
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your DB credentials
+npm run dev
+
+# 3. Frontend Setup & Run (in another terminal)
+cd frontend
+npm install
+npm start
+```
+
+Visit **http://localhost:3000** in your browser and login with demo credentials.
+
+---
+
+### Detailed Setup Instructions
 
 ### 1. Database Setup
 
