@@ -6,38 +6,39 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Addressing the deprecation warning from your logs
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
-    # This must match the label of your on-prem runner
-    runs-on: self-hosted 
+    runs-on: self-hosted
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Optional: Clean workspace to prevent artifacts from previous runs
-      - name: Cleanup Previous Build
-        run: |
-          echo "Cleaning up workspace..."
-          rm -rf ./dist ./build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # Using a stable, modern version
+          cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Clean and Install
         run: |
-          # Replace with your specific package manager (e.g., pip install, mvn install)
-          npm install 
+          # Clean build artifacts to keep on-prem storage tidy
+          rm -rf dist build
+          npm ci # 'npm ci' is faster and more reliable for CI/CD than 'npm install'
 
-      - name: Run Build
-        run: |
-          npm run build --if-present
+      - name: Build Project
+        run: npm run build --if-present
 
       - name: Run Tests
-        run: |
-          npm test
+        run: npm test --if-present
 
-      # Example: Local Deployment / Service Restart
-      # Since it's on-prem, you can trigger local scripts directly
+      # Placeholder for your local deployment
       - name: Local Deploy
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "Deploying to local environment..."
-          # ./scripts/deploy.sh or systemctl restart school-mgmt
+          echo "Deploying school-management to local services..."
+          # Add your restart commands here, e.g., pm2 restart all or systemctl restart app
